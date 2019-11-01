@@ -1,15 +1,65 @@
 <template>
-  <div id="todoVue">
-    <div id="headerId">
-      <h1>TODO List</h1>
+  <div id="app">
+    <h1>My Todos</h1>
+    <div v-for="item in items" :key="item.index">
+      <input type="checkbox" v-model="item.isDone" />
+      {{$index}}:{{t.content}}
     </div>
-    <div id="inputId"></div>
+    <input type="text" v-model="input" value="">
+    <input type="button" v-on:click="addTodo" value="add todo" />
+    <div>
+        left {{lefts}} tasks.
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld'
+  el: '#todo',
+  data:function() {
+    return {
+      todos: [
+        {index:0, content:'', isDone:false}
+      ]
+    }
+  },
+  computed: {
+    lefts: function(){
+      return this.todos.filter(function(t){ return !t.isDone }).length;
+    }
+  },
+  created: function(){
+    this.title = "My Todos";
+    var saved = [
+      {
+        isDone:true,
+        content:"content1"
+      },
+      {
+        isDone:false,
+        content:"content2"
+      },
+      {
+        isDone:false,
+        content:"content3"
+      },
+      {
+        isDone:false,
+        content:"content4"
+      }
+    ]
+    for(var i = 0; i < saved.length; i++){
+      this.todos.push(saved[i]);
+    }
+
+  },
+  methods:{
+    addTodo: function(){
+      if ( this.input === '' ) return;
+      this.todos.push({ index:this.todos.slice(-1)[0], content:this.input, isDone:false });
+      this.input = ""
+    }
+  }
 }
 </script>
 
