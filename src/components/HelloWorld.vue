@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <div id="todo">
     <h1>My Todos</h1>
-    <div v-for="item in items" :key="item.index">
-      <input type="checkbox" v-model="item.isDone" />
-      {{$index}}:{{t.content}}
+    <div v-for="todo in todos" :key="todo.index">
+      <input type="checkbox" v-model="todos.isDone" />
+      {{todo.index}}:{{todo.content}}
     </div>
     <input type="text" v-model="input" value="">
     <input type="button" v-on:click="addTodo" value="add todo" />
@@ -15,49 +15,53 @@
 
 <script>
 export default {
-  el: '#todo',
-  data:function() {
+  data () {
     return {
-      todos: [
-        {index:0, content:'', isDone:false}
-      ]
+      todos: [],
+      input: ''
     }
   },
   computed: {
-    lefts: function(){
-      return this.todos.filter(function(t){ return !t.isDone }).length;
+    lefts () {
+      return this.todos.filter(function (t) {
+        return !t.isDone
+      }).length
     }
   },
-  created: function(){
-    this.title = "My Todos";
+  created: function () {
+    this.title = 'My Todos'
     var saved = [
       {
-        isDone:true,
-        content:"content1"
+        index: 1,
+        isDone: true,
+        content: 'content1'
       },
       {
-        isDone:false,
-        content:"content2"
+        index: 2,
+        isDone: false,
+        content: 'content2'
       },
       {
-        isDone:false,
-        content:"content3"
+        index: 3,
+        isDone: false,
+        content: 'content3'
       },
       {
-        isDone:false,
-        content:"content4"
+        index: 4,
+        isDone: false,
+        content: 'content4'
       }
     ]
-    for(var i = 0; i < saved.length; i++){
-      this.todos.push(saved[i]);
+    for (var i = 0; i < saved.length; i++) {
+      this.todos.push(saved[i])
     }
-
   },
-  methods:{
-    addTodo: function(){
-      if ( this.input === '' ) return;
-      this.todos.push({ index:this.todos.slice(-1)[0], content:this.input, isDone:false });
-      this.input = ""
+  methods: {
+    addTodo: function () {
+      if (this.input === '') return
+      var indexNum = this.todos.length + 1
+      this.todos.push({ index: indexNum, content: this.input, isDone: false })
+      this.input = ''
     }
   }
 }
